@@ -1,97 +1,87 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-void main (){
+import 'package:flutter/widgets.dart';
+
+void main(){
   runApp(MyApp());
 }
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+          String output = "0";
+          String _output = "0";
+          int num1 = 0;
+        int num2 = 0;
+          String operand = "";
 
-  String output = "0";
-  String _output = "0";
-  double num1 = 0.0;
-  double num2 = 0.0;
-  String operand = "";
+          operation(String btnText ){
+            if(btnText=="C"){
+              _output = "0";
+               num1 = 0;
+               num2 = 0;
+               operand = "";
+            }
+            else if (btnText=="/"||btnText=="+"||btnText=="x"||btnText=="-"){
+              num1 = int.parse(_output);
+              operand =btnText;
+              _output = "0";
+            }
+            else if (btnText=="="){
+              num2= int.parse(output);
+              if(operand== "+"){
+                _output= (num1 + num2).toString();
+              }
+              if(operand== "-"){
+                _output= (num1 - num2).toString();
+              }
+              if(operand== "/"){
+                _output= (num1 / num2).toString();
+              }
+              if(operand== "x"){
+                _output= (num1 * num2).toString();
+              }
+              num1 = 0;
+              num2 = 0;
+              operand = "";
+            }
+            else{
+              _output = _output + btnText;
+            }
+            setState(() {
+              output = int.parse(_output).toStringAsFixed(1);
+            });
+          }
 
-
-  operation(String btntext) {
-    if (btntext == "C") {
-      _output = "0";
-      num2 = 0.0;
-      num1 = 0.0;
-      operand = "";
-
-    }
-    else
-    if (btntext == "+" || btntext == "-" || btntext == "/" || btntext == "/") {
-      num1 = double.parse(output);
-      operand = btntext;
-      _output = "0";
-    }
-    else if (btntext == "=") {
-      num2 = double.parse(output);
-      operand = btntext;
-    }
-    if (operand == "+") {
-      _output = (num1 + num2).toString();
-    }
-    if (operand == "-") {
-      _output = (num1 - num2).toString();
-    }
-    if (operand == "/") {
-      _output = (num1 / num2).toString();
-    }
-    if (operand == "X") {
-      _output = (num1 * num2).toString();
-    }
-    num1 = 0.0;
-    num2 = 0.0;
-    operand = "";
-  }
-  else{
-    _output = _output + btntext;
-  }
-  setState(() {
-    output = double.parse(_output).toStringAsFixed(2);
-  }
-}
-
-
-  Widget Button(String btntext) {
+  Widget button(String btnText){
     return Expanded(
         child: RawMaterialButton(
-            splashColor: Colors.white,
-            fillColor: Colors.blueGrey,
-            shape: Border.all(color: Colors.black, width: 1),
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: Text("$btntext",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                  )),
+          shape: Border.all(color: Colors.black, width: 2),
+          padding: const EdgeInsets.all(30.0),
+          splashColor: Colors.white,
 
-            ),
-            onPressed: () {
-              operation(btntext);
-            }
-        ));
+          child: Text("$btnText",
+            style: TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+          ),),
+          fillColor: Colors.blue,
+          onPressed: (){
+            operation(btnText);
+          },
+        )
+    );
   }
-
-
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Calculator"),
-          backgroundColor: Colors.cyan,
+          backgroundColor: Colors.blue,
         ),
         body: Container(
           child: Column(
@@ -104,138 +94,130 @@ class _MyAppState extends State<MyApp> {
                       border: Border.all(color: Colors.black, width: 2),
                       color: Colors.black12,
                     ),
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(30.0),
                     margin: EdgeInsets.only(bottom: 8.0),
                     child: Text("$output",
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 50,
+                        fontSize: 40,
 
                       ),),
                   )),
+              
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left:8.0),
                 child: Row(
-                    children: [
-                      Button("9"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("8"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("7"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("/"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                    ]
-                ),
+                 children: [
+                  button("9"),
+                    SizedBox(
+                  width: 5,),
+                  button("8"),
+                   SizedBox(
+                  width: 5,),
+                  button("7"),
+                  SizedBox(
+                width: 5,),
+                  button("/"),
+                  SizedBox(
+                width: 5,),
+            ]
+        ),
               ),
+           SizedBox(
+           height: 5,
+           ),
+          Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+            child: Row(
+            children: [
+              button("6"),
               SizedBox(
-                height: 5,
+                width: 5,
+
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                    children: [
-                      Button("6"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("5"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("4"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("x"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                    ]
-                ),
-              ),
+              button("5"),
               SizedBox(
-                height: 5,
+                width: 5,
 
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Row(
-                    children: [
-                      Button("3"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("2"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("1"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                      Button("+"),
-                      SizedBox(
-                        width: 5,
-
-                      ),
-                    ]
-                ),
-              ),
+              button("4"),
               SizedBox(
-                height: 5,
+                width: 5,
 
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0, left: 8.0),
-                child: Row(
+              button("x"),
+              SizedBox(
+                width: 5,
 
-                    children: [
-                      Button("0"),
-                      SizedBox(
-                        width: 5,
+              ),
+            ]
+        ),
+      ),
+            SizedBox(
+           height: 5,
+         ),
+            Padding(padding: const EdgeInsets.only(left: 8.0),
+              child: Row(
+              children: [
+                button("3"),
+                SizedBox(
+                width: 5,
 
-                      ),
-                      Button("C"),
-                      SizedBox(
-                        width: 5,
+              ),
+                button("2"),
+                SizedBox(
+                width: 5,
 
-                      ),
-                      Button("="),
-                      SizedBox(
-                        width: 5,
+              ),
+                button("1"),
+                SizedBox(
+                width: 5,
 
-                      ),
-                      Button("-"),
-                      SizedBox(
-                        width: 5,
+              ),
+                button("+"),
+                SizedBox(
+                width: 5,
 
-                      ),
-                    ]
-                ),
-              )
+              ),
+            ]
+        ),
+      ),
+            SizedBox(
+             height: 5,
+            ),
+
+            Padding(
+            padding: const EdgeInsets.only(bottom: 8.0, left: 8.0),
+              child: Row(
+
+                children: [
+                 button("0"),
+                 SizedBox(
+              width: 5,
+
+            ),
+                button("C"),
+                SizedBox(
+              width: 5,
+
+            ),
+                button("="),
+               SizedBox(
+              width: 5,
+
+            ),
+                button("-"),
+               SizedBox(
+              width: 5,
+
+            ),
+               ],
+              ),
+          )
             ],
           ),
         ),
       ),
     );
   }
+}
